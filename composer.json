@@ -4,7 +4,7 @@
     "description": "Doctrine2 behavioral extensions",
     "replace": {
         "gedmo/doctrine-extensions": "*"
-    }
+    },
     "keywords": [
         "behaviors",
         "doctrine2",
