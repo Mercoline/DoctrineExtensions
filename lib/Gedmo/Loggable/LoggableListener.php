@@ -261,6 +261,18 @@ class LoggableListener extends MappedEventSubscriber
                 $logEntry->setData($newValues);
             }
 
+            /*
+             * Filter fields that are marked as ignored,
+             * stop processing if the changeSet is empty:
+             */
+            $changeSet = $ea->getObjectChangeSet($uow, $object);
+            foreach ($config['ignored'] as $ignoredField) {
+                unset($changeSet[$ignoredField]);
+            }
+            if ($action === self::ACTION_UPDATE && count($changeSet) == 0) {
+                return;
+            }
+
             $version = 1;
             if ($action !== self::ACTION_CREATE) {
                 $version = $ea->getNewVersion($logEntryMeta, $object);

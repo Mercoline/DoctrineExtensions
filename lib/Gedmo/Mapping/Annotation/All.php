@@ -13,6 +13,7 @@
 include __DIR__.'/Language.php';
 include __DIR__.'/Locale.php';
 include __DIR__.'/Loggable.php';
+include __DIR__.'/Ignored.php';
 include __DIR__.'/Slug.php';
 include __DIR__.'/SlugHandler.php';
 include __DIR__.'/SlugHandlerOption.php';

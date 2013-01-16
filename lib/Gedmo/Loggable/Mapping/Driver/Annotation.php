@@ -32,6 +32,11 @@ class Annotation extends AbstractAnnotationDriver
     const VERSIONED = 'Gedmo\\Mapping\\Annotation\\Versioned';
 
     /**
+     * Annotation to define that this property is ignored when detecting updates to an entity
+     */
+    const IGNORED = 'Gedmo\\Mapping\\Annotation\\Ignored';
+
+    /**
      * {@inheritDoc}
      */
     public function validateFullMetadata(ClassMetadata $meta, array $config)
@@ -41,6 +46,9 @@ class Annotation extends AbstractAnnotationDriver
         }
         if (isset($config['versioned']) && !isset($config['loggable'])) {
             throw new InvalidMappingException("Class must be annoted with Loggable annotation in order to track versioned fields in class - {$meta->name}");
+        }
+        if (isset($config['ignored']) && !isset($config['loggable'])) {
+            throw new InvalidMappingException("Class must be annoted with Loggable annotation in order to ignored fields in class - {$meta->name}");
         }
     }
 
@@ -77,6 +85,12 @@ class Annotation extends AbstractAnnotationDriver
                 // fields cannot be overrided and throws mapping exception
                 $config['versioned'][] = $field;
             }
+            // ignored property
+            if ($versioned = $this->reader->getPropertyAnnotation($property, self::IGNORED)) {
+                $field = $property->getName();
+                // fields cannot be overrided and throws mapping exception
+                $config['ignored'][] = $field;
+            }
         }
 
         if (!$meta->isMappedSuperclass && $config) {
@@ -85,6 +99,9 @@ class Annotation extends AbstractAnnotationDriver
             }
             if (isset($config['versioned']) && !isset($config['loggable'])) {
                 throw new InvalidMappingException("Class must be annoted with Loggable annotation in order to track versioned fields in class - {$meta->name}");
+            }
+            if (isset($config['ignored']) && !isset($config['loggable'])) {
+                throw new InvalidMappingException("Class must be annoted with Loggable annotation in order to ignored fields in class - {$meta->name}");
             }
         }
     }
